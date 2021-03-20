@@ -1,0 +1,50 @@
+title: goful
+menu:
+  bookmarks:
+    list:
+      - dropbox
+      - onedrive
+      - envsetup
+      - gosrc
+      - workspace
+      - separator
+      - fdrive
+      - gdrive
+      - hdrive
+    separator:
+      accel: "-"
+      label: "------------"
+      path: ""
+    dropbox:
+      accel: z 
+      label: "~/Dropbox"
+      path: "~/Dropbox"
+    onedrive:
+      accel: o 
+      label: "~/OneDrive"
+      path: "~/OneDrive"
+    envsetup:
+      accel: s
+      label: "~/EnvSetup"
+      path: "~/EnvSetup"
+    gosrc:
+      accel: g
+      label: "go src"
+      path: "~/go/src/github.com"
+    workspace:
+      accel: w 
+      label: "~/workspace"
+      path: "~/workspace"
+    fdrive:
+      accel: F 
+      label: "F:/"
+      path: "F:/"
+    gdrive:
+      accel: G 
+      label: "G:/"
+      path: "G:/"
+    hdrive:
+      accel: H 
+      label: "H:/"
+      path: "H:/"
+      
