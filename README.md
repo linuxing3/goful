@@ -1,4 +1,4 @@
-# Goful
+G# Goful
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/linuxing3/goful)](https://goreportcard.com/report/github.com/linuxing3/goful)
 [![Go Reference](https://pkg.go.dev/badge/github.com/linuxing3/goful.svg)](https://pkg.go.dev/github.com/linuxing3/goful)
@@ -17,7 +17,7 @@ Goful 跨平台的简单快捷终端文件管理器
 
 ### Go version >= 1.16
 
-    $ go install github.com/linuxing3/goful
+    $ go install github.com/linuxing3/goful@latest
     ...
     $ goful
 
@@ -35,8 +35,8 @@ key                  | function
 ---------------------|-----------
 `C-n` `down` `j`     | Move cursor down
 `C-p` `up` `k`       | Move cursor up
-`C-a` `home` `^`     | Move cursor top
-`C-e` `end` `$`      | Move cursor bottom
+`C-a` `home` `u`     | Move cursor top
+`C-e` `end` `G`      | Move cursor bottom
 `C-f` `C-i` `right` `l`| Move cursor right
 `C-b` `left` `h`     | Move cursor left
 `C-d`                | More move cursor down
@@ -78,7 +78,7 @@ key                  | function
 `D`                  | Remove
 `d`                  | Change directory
 `g`                  | Glob
-`G`                  | Glob recursive
+`$`                  | Glob recursive
 `C-g` `C-[`          | Cancel
 `q` `Q`              | Quit
 
