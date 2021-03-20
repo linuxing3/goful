@@ -534,9 +534,19 @@ func InitConfig() {
 func CustomizeBookmark(g *app.Goful) {
 	bookmarks := viper.GetStringSlice("menu.bookmarks.list")
 	for _, bookmark := range bookmarks {
-		accel := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.accel", bookmark))
-		label := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.label", bookmark))
-		path := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.path", bookmark))
-		menu.Add("bookmark", accel, label, func() { g.Dir().Chdir(path) })
+		if runtime.GOOS == "windows" {
+			AddMenuItem(g, bookmark)
+		} else {
+			if !strings.Contains(bookmark, "drive") {
+				AddMenuItem(g, bookmark)
+			}
+		}
 	}
+}
+
+func AddMenuItem(g *app.Goful, bookmark string) {
+	accel := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.accel", bookmark))
+	label := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.label", bookmark))
+	path := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.path", bookmark))
+	menu.Add("bookmark", accel, label, func() { g.Dir().Chdir(path) })
 }
