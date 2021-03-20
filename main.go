@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 	"strings"
@@ -13,8 +12,8 @@ import (
 	"github.com/anmitsu/goful/menu"
 	"github.com/anmitsu/goful/message"
 	"github.com/anmitsu/goful/widget"
+	conf "github.com/linuxing3/goful/config"
 	"github.com/mattn/go-runewidth"
-	"github.com/spf13/viper"
 )
 
 type MenuItem struct {
@@ -29,7 +28,13 @@ type Config struct {
 }
 
 func main() {
-	InitConfig()
+	// ui.TestListBox()
+	start()
+}
+
+func start() {
+	// 加载自定义设置
+	conf.InitConfig()
 	widget.Init()
 	defer widget.Fini()
 
@@ -228,6 +233,8 @@ func config(g *app.Goful) {
 			"A", "archives menu     ", func() { g.Menu("archive") },
 		)
 	}
+	// 添加自定义命令
+	conf.CustomizeConfig(g, "external-command")
 	g.AddKeymap("X", func() { g.Menu("external-command") })
 
 	menu.Add("archive",
@@ -253,8 +260,9 @@ func config(g *app.Goful) {
 		"6", "find . *.rar extract", func() { g.Shell(`find . -name "*.rar" -type f -prune -print0 | xargs -n1 -0 unrar x -C ./`) },
 	)
 
-	// Adding CustomizeBookmark
-	CustomizeBookmark(g)
+	// 添加定义书签
+	conf.CustomizeConfig(g,"bookmark")
+
 	menu.Add("bookmark",
 		"t", "~/Desktop  ", func() { g.Dir().Chdir("~/Desktop") },
 		"c", "~/Documents", func() { g.Dir().Chdir("~/Documents") },
@@ -517,36 +525,4 @@ func menuKeymap(w *menu.Menu) widget.Keymap {
 		"C-g":  func() { w.Exit() },
 		"C-[":  func() { w.Exit() },
 	}
-}
-
-func InitConfig() {
-	viper.SetConfigName("config")       // name of config file (without extension)
-	viper.SetConfigType("yaml")         // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("/etc/goful/")  // path to look for the config file in
-	viper.AddConfigPath("$HOME/.goful") // call multiple times to add many search paths
-	viper.AddConfigPath(".")            // optionally look for config in the working directory
-	err := viper.ReadInConfig()         // Find and read the config file
-	if err != nil {                     // Handle errors reading the config file
-		panic(fmt.Errorf("fatal error config file: %s \n", err))
-	}
-}
-
-func CustomizeBookmark(g *app.Goful) {
-	bookmarks := viper.GetStringSlice("menu.bookmarks.list")
-	for _, bookmark := range bookmarks {
-		if runtime.GOOS == "windows" {
-			AddMenuItem(g, bookmark)
-		} else {
-			if !strings.Contains(bookmark, "drive") {
-				AddMenuItem(g, bookmark)
-			}
-		}
-	}
-}
-
-func AddMenuItem(g *app.Goful, bookmark string) {
-	accel := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.accel", bookmark))
-	label := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.label", bookmark))
-	path := viper.GetString(fmt.Sprintf("menu.bookmarks.%s.path", bookmark))
-	menu.Add("bookmark", accel, label, func() { g.Dir().Chdir(path) })
 }

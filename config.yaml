@@ -1,6 +1,18 @@
 title: goful
 menu:
-  bookmarks:
+  external-command:
+    list:
+      - win_notepad2
+      - win_nvim-qt
+    win_notepad2:
+      accel: "n"
+      label: "notepad2"
+      path: "notepad2 %~f"
+    win_nvim-qt:
+      accel: "v"
+      label: "nvim-qt"
+      path: "nvim-qt %~f"
+  bookmark:
     list:
       - dropbox
       - onedrive
@@ -8,9 +20,9 @@ menu:
       - gosrc
       - workspace
       - separator
-      - fdrive
-      - gdrive
-      - hdrive
+      - win_drive_f
+      - win_drive_g
+      - win_drive_h
     separator:
       accel: "-"
       label: "------------"
@@ -35,15 +47,15 @@ menu:
       accel: w 
       label: "~/workspace"
       path: "~/workspace"
-    fdrive:
+    win_drive_f:
       accel: F 
       label: "F:/"
       path: "F:/"
-    gdrive:
+    win_drive_g:
       accel: G 
       label: "G:/"
       path: "G:/"
-    hdrive:
+    win_drive_h:
       accel: H 
       label: "H:/"
       path: "H:/"
