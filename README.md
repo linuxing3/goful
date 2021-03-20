@@ -17,7 +17,7 @@ Goful 跨平台的简单快捷终端文件管理器
 
 ### Go version >= 1.16
 
-    $ go install github.com/linuxing3/goful@latest
+    $ go install github.com/linuxing3/goful
     ...
     $ goful
 
