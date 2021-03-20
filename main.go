@@ -245,8 +245,10 @@ func config(g *app.Goful) {
 		"m", "~/Music    ", func() { g.Dir().Chdir("~/Music") },
 		"p", "~/Pictures ", func() { g.Dir().Chdir("~/Pictures") },
 		"v", "~/Videos   ", func() { g.Dir().Chdir("~/Videos") },
-		"s", "~/EnvSetup   ", func() { g.Dir().Chdir("~/EnvSetup") },
-		"o", "~/OneDrive   ", func() { g.Dir().Chdir("~/OneDrive") },
+		"s", "~/EnvSetup ", func() { g.Dir().Chdir("~/EnvSetup") },
+		"o", "~/OneDrive ", func() { g.Dir().Chdir("~/OneDrive") },
+		"g", "gopath src ", func() { g.Dir().Chdir("~/go/src/github.com") },
+		"w", "workspace  ", func() { g.Dir().Chdir("~/workspace") },
 	)
 	if runtime.GOOS == "windows" {
 		menu.Add("bookmark",
@@ -260,6 +262,7 @@ func config(g *app.Goful) {
 	} else {
 		menu.Add("bookmark",
 			"e", "/etc   ", func() { g.Dir().Chdir("/etc") },
+			"E", "usr etc", func() { g.Dir().Chdir("/usr/local/etc") },
 			"u", "/usr   ", func() { g.Dir().Chdir("/usr") },
 			"x", "/media ", func() { g.Dir().Chdir("/media") },
 			"m", "/mnt   ", func() { g.Dir().Chdir("/mnt") },
@@ -270,7 +273,9 @@ func config(g *app.Goful) {
 	menu.Add("editor",
 		"c", "vscode        ", func() { g.Spawn("code %f %&") },
 		"e", "emacs client  ", func() { g.Spawn("emacsclient -n %f %&") },
-		"v", "nvim           ", func() { g.Spawn("nvim %f") },
+		"E", "emacs         ", func() { g.Spawn("emacs -q %f %&") },
+		"v", "nvim          ", func() { g.Spawn("nvim %f") },
+		"n", "nano          ", func() { g.Spawn("nano %f") },
 	)
 	g.AddKeymap("e", func() { g.Menu("editor") })
 
@@ -295,7 +300,7 @@ func config(g *app.Goful) {
 			".rb":  func() { g.Shell("ruby %~f") },
 			".js":  func() { g.Shell("node %~f") },
 			".ts":  func() { g.Shell("deno %~f") },
-			".rs":  func() { g.Shell("rust run %~f") },
+			".rs":  func() { g.Shell("cargo run %~f") },
 		}
 	} else {
 		associate = widget.Keymap{
@@ -315,6 +320,8 @@ func config(g *app.Goful) {
 			".py": func() { g.Shell("python %f") },
 			".rb": func() { g.Shell("ruby %f") },
 			".js": func() { g.Shell("node %f") },
+			".ts": func() { g.Shell("deno %f") },
+			".rs": func() { g.Shell("cargo run %f") },
 
 			".jpg":  func() { g.Menu("image") },
 			".jpeg": func() { g.Menu("image") },
@@ -362,7 +369,7 @@ func filerKeymap(g *app.Goful) widget.Keymap {
 		"w":         func() { g.Workspace().ChdirNeighbor() },
 		"C-h":       func() { g.Dir().Chdir("..") },
 		"backspace": func() { g.Dir().Chdir("..") },
-		"u":         func() { g.Dir().Chdir("..") },
+		"^":         func() { g.Dir().Chdir("..") },
 		"~":         func() { g.Dir().Chdir("~") },
 		"\\":        func() { g.Dir().Chdir("/") },
 		"C-n":       func() { g.Dir().MoveCursor(1) },
@@ -377,8 +384,8 @@ func filerKeymap(g *app.Goful) widget.Keymap {
 		"C-e":       func() { g.Dir().MoveBottom() },
 		"home":      func() { g.Dir().MoveTop() },
 		"end":       func() { g.Dir().MoveBottom() },
-		"^":         func() { g.Dir().MoveTop() },
-		"$":         func() { g.Dir().MoveBottom() },
+		"u":         func() { g.Dir().MoveTop() },
+		"G":         func() { g.Dir().MoveBottom() },
 		"M-n":       func() { g.Dir().Scroll(1) },
 		"M-p":       func() { g.Dir().Scroll(-1) },
 		"C-v":       func() { g.Dir().PageDown() },
@@ -405,7 +412,7 @@ func filerKeymap(g *app.Goful) widget.Keymap {
 		"D":         func() { g.Remove() },
 		"d":         func() { g.Chdir() },
 		"g":         func() { g.Glob() },
-		"G":         func() { g.Globdir() },
+		"$":         func() { g.Globdir() },
 	}
 }
 
