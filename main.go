@@ -16,16 +16,6 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
-type MenuItem struct {
-	accel string
-	label string
-	path  string
-}
-
-type Config struct {
-	title string
-	menu  map[string][]MenuItem
-}
 
 func main() {
 	// ui.TestListBox()
