@@ -217,6 +217,7 @@ func config(g *app.Goful) {
 			"n", "create newfile   ", func() { g.Shell("copy nul ") },
 			"r", "move (rename) %f ", func() { g.Shell("move /-y %~f ./") },
 			"w", "where . *        ", func() { g.Shell("where . *") },
+			"Z", "Config Template", func() { conf.MakeDefaultConfig(conf.ConfigTemplate) },
 		)
 	} else {
 		menu.Add("external-command",
@@ -231,6 +232,7 @@ func config(g *app.Goful) {
 			"R", "bulk rename %m    ", func() { g.Shell(`rename -v "s///" %m`, -6) },
 			"f", "find . -name      ", func() { g.Shell(`find . -name "*"`, -1) },
 			"A", "archives menu     ", func() { g.Menu("archive") },
+			"Z", "Config Template", func() { conf.MakeDefaultConfig(conf.ConfigTemplate) },
 		)
 	}
 	// 添加自定义命令
@@ -261,7 +263,7 @@ func config(g *app.Goful) {
 	)
 
 	// 添加定义书签
-	conf.CustomizeConfig(g,"bookmark")
+	conf.CustomizeConfig(g, "bookmark")
 
 	menu.Add("bookmark",
 		"t", "~/Desktop  ", func() { g.Dir().Chdir("~/Desktop") },
