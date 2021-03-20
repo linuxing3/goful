@@ -41,7 +41,7 @@ func AddMenuItem(g *app.Goful, section string, item string) {
 	}
 	if section == "bookmark" {
 		menu.Add(section, c.accel, c.label, func() { g.Dir().Chdir(c.path) })
-	} else if section == "command" {
+	} else if section == "external-command" || section == "command" {
 		menu.Add(section, c.accel, c.label, func() { g.Shell(c.path) })
 	}
 }
