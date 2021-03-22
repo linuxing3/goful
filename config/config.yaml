@@ -1,25 +1,54 @@
 title: goful
 menu:
-  external-command:
+  editor:
     list:
-      - win_notepad2
+      - separator
+      - win_micro
+      - win_emacs
       - win_nvim-qt
+      - win_notepad2
+    separator:
+      accel: "-"
+      label: "----win-----"
+      path: ""
+    win_micro:
+      accel: "x"
+      label: "win micro"
+      path: "micro %~f"
+    win_emacs:
+      accel: "r"
+      label: "win emacs"
+      path: "emacs %~f"
     win_notepad2:
-      accel: "n"
-      label: "notepad2"
+      accel: "t"
+      label: "win notepad2"
       path: "notepad2 %~f"
     win_nvim-qt:
-      accel: "v"
+      accel: "s"
       label: "nvim-qt"
       path: "nvim-qt %~f"
+  external-command:
+    list:
+      - separator
+      - win_micro
+      - win_notepad2
+      - win_nvim-qt
+    separator:
+      accel: "-"
+      label: "----win-----"
+      path: ""
     win_micro:
-      accel: "m"
-      label: "micro"
+      accel: "x"
+      label: "win micro"
       path: "micro %~f"
-    micro:
-      accel: "m"
-      label: "micro"
-      path: "micro %~f"
+    win_notepad2:
+      accel: "t"
+      label: "win notepad2"
+      path: "notepad2 %~f"
+    win_nvim-qt:
+      accel: "s"
+      label: "nvim-qt"
+      path: "nvim-qt %~f"
   bookmark:
     list:
       - dropbox
