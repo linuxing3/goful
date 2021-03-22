@@ -288,8 +288,13 @@ func config(g *app.Goful) {
 		"m", "micro         ", func() { g.Spawn("micro %f") },
 		"n", "nano          ", func() { g.Spawn("nano %f") },
 	)
+	conf.CustomizeConfig(g, "editor")
 	g.AddKeymap("e", func() { g.Menu("editor") })
 
+    // Customize git
+    conf.CustomizeConfig(g, "git")
+    g.AddKeymap("a", func() { g.Menu("git") })
+    
 	menu.Add("image",
 		"x", "default    ", func() { g.Spawn(opener) },
 		"e", "eog        ", func() { g.Spawn("eog %f %&") },
