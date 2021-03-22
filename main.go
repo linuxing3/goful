@@ -285,6 +285,7 @@ func config(g *app.Goful) {
 		"e", "emacs client  ", func() { g.Spawn("emacsclient -n %f %&") },
 		"M", "emacs         ", func() { g.Spawn("emacs -q %f %&") },
 		"v", "nvim          ", func() { g.Spawn("nvim %f") },
+		"m", "micro         ", func() { g.Spawn("micro %f") },
 		"n", "nano          ", func() { g.Spawn("nano %f") },
 	)
 	g.AddKeymap("e", func() { g.Menu("editor") })

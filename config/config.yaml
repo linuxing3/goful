@@ -12,6 +12,14 @@ menu:
       accel: "v"
       label: "nvim-qt"
       path: "nvim-qt %~f"
+    win_micro:
+      accel: "m"
+      label: "micro"
+      path: "micro %~f"
+    micro:
+      accel: "m"
+      label: "micro"
+      path: "micro %~f"
   bookmark:
     list:
       - dropbox
@@ -59,4 +67,3 @@ menu:
       accel: H 
       label: "H:/"
       path: "H:/"
-      
