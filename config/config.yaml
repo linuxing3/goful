@@ -1,5 +1,27 @@
 title: goful
 menu:
+  git:
+    list:
+      - add
+      - commit
+      - push
+      - deploy
+    add:
+      accel: "a"
+      label: "add"
+      path: "git add ."
+    commit:
+      accel: "c"
+      label: "commit"
+      path: "git commit -m quick"
+    push:
+      accel: "p"
+      label: "push"
+      path: "git push"
+    deploy:
+      accel: "d"
+      label: "deploy"
+      path: "'git add .'' && 'git commit -m quick' && 'git push'"
   editor:
     list:
       - separator
