@@ -16,7 +16,6 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
-
 func main() {
 	// ui.TestListBox()
 	start()
@@ -291,10 +290,13 @@ func config(g *app.Goful) {
 	conf.CustomizeConfig(g, "editor")
 	g.AddKeymap("e", func() { g.Menu("editor") })
 
-    // 添加git菜单
-    conf.CustomizeConfig(g, "git")
-    g.AddKeymap("a", func() { g.Menu("git") })
-    
+	// 添加git菜单
+	conf.CustomizeConfig(g, "git")
+	g.AddKeymap("a", func() { g.Menu("git") })
+
+	conf.CustomizeConfig(g, "web")
+	g.AddKeymap("w", func() { g.Menu("web") })
+
 	menu.Add("image",
 		"x", "default    ", func() { g.Spawn(opener) },
 		"e", "eog        ", func() { g.Spawn("eog %f %&") },

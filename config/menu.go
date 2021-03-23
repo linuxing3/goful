@@ -26,7 +26,7 @@ func GetConfigItem(g *app.Goful, section string, item string) map[string]string 
 	return viper.GetStringMapString(fmt.Sprintf("menu.%s.%s", section, item))
 }
 
-func MapConfigItemToMenuItem(section, item string) MenuItem{
+func MapConfigItemToMenuItem(section, item string) MenuItem {
 	m := MenuItem{}
 	m.accel = viper.GetString(fmt.Sprintf("menu.%s.%s.accel", section, item))
 	m.label = viper.GetString(fmt.Sprintf("menu.%s.%s.label", section, item))
@@ -45,7 +45,7 @@ func AddMenuItem(g *app.Goful, section string, item string) {
 		menu.Add(section, c.accel, c.label, func() { g.Shell(c.path) })
 	} else if section == "editor" {
 		menu.Add(section, c.accel, c.label, func() { g.Spawn(c.path) })
-	} else if section == "git" {
+	} else if section == "git" || section == "web" {
 		menu.Add(section, c.accel, c.label, func() { g.Spawn(c.path) })
 	}
 }
