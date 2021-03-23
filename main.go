@@ -28,7 +28,7 @@ func start() {
 	widget.Init()
 	defer widget.Fini()
 
-	// Change a terminal title.
+	// 修改终端标题
 	if strings.Contains(os.Getenv("TERM"), "screen") {
 		os.Stdout.WriteString("\033kgoful\033") // for tmux
 	} else {
@@ -76,8 +76,8 @@ func config(g *app.Goful) {
 	filer.SetStatView(true, false, true)  // size, permission and time
 	filer.SetTimeFormat("06-01-02 15:04") // ex: "Jan _2 15:04"
 
-	// Setup open command for C-m (when the enter key is pressed)
-	// The macro %f means expanded to a file name, for more see (spawn.go)
+	// C-m或回车打开文件
+	// 宏 %f 代表当前文件
 	opener := "xdg-open %f %&"
 	switch runtime.GOOS {
 	case "windows":
@@ -90,13 +90,13 @@ func config(g *app.Goful) {
 		"o":   func() { g.Spawn(opener) },
 	})
 
-	// Setup pager by $PAGER
+	// 设置页 pager by $PAGER
 	pager := os.Getenv("PAGER")
 	if pager == "" {
 		if runtime.GOOS == "windows" {
-			pager = "more"
+			pager = "bat"
 		} else {
-			pager = "less"
+			pager = "bat"
 		}
 	}
 	if runtime.GOOS == "windows" {
@@ -106,7 +106,7 @@ func config(g *app.Goful) {
 	}
 	g.AddKeymap("i", func() { g.Spawn(pager) })
 
-	// Setup a shell and a terminal to execute external commands.
+	// shell 或 terminal 用于执行外部命令
 	// The shell is called when execute on background by the macro %&.
 	// The terminal is called when the other.
 	if runtime.GOOS == "windows" {
@@ -133,7 +133,7 @@ func config(g *app.Goful) {
 		})
 	}
 
-	// Setup menus and add to keymap.
+	// 设置菜单并添加触发按键
 	menu.Add("sort",
 		"n", "sort name          ", func() { g.Dir().SortName() },
 		"N", "sort name decending", func() { g.Dir().SortNameDec() },
@@ -225,7 +225,7 @@ func config(g *app.Goful) {
 			"Z", "Config Template", func() { conf.MakeDefaultConfig(conf.ConfigTemplate) },
 		)
 	}
-	// 添加自定义命令
+	// 添加自定义外部命令
 	conf.CustomizeConfig(g, "external-command")
 	g.AddKeymap("X", func() { g.Menu("external-command") })
 
@@ -252,9 +252,8 @@ func config(g *app.Goful) {
 		"6", "find . *.rar extract", func() { g.Shell(`find . -name "*.rar" -type f -prune -print0 | xargs -n1 -0 unrar x -C ./`) },
 	)
 
-	// 添加定义书签
+	// 添加自定义书签
 	conf.CustomizeConfig(g, "bookmark")
-
 	menu.Add("bookmark",
 		"t", "~/Desktop  ", func() { g.Dir().Chdir("~/Desktop") },
 		"c", "~/Documents", func() { g.Dir().Chdir("~/Documents") },
@@ -271,11 +270,11 @@ func config(g *app.Goful) {
 		)
 	} else {
 		menu.Add("bookmark",
-			"e", "/etc   ", func() { g.Dir().Chdir("/etc") },
-			"E", "usr etc", func() { g.Dir().Chdir("/usr/local/etc") },
-			"u", "/usr   ", func() { g.Dir().Chdir("/usr") },
-			"x", "/media ", func() { g.Dir().Chdir("/media") },
-			"m", "/mnt   ", func() { g.Dir().Chdir("/mnt") },
+			"e", "/etc          ", func() { g.Dir().Chdir("/etc") },
+			"E", "/usr/local/etc", func() { g.Dir().Chdir("/usr/local/etc") },
+			"u", "/usr          ", func() { g.Dir().Chdir("/usr") },
+			"x", "/media        ", func() { g.Dir().Chdir("/media") },
+			"m", "/mnt          ", func() { g.Dir().Chdir("/mnt") },
 		)
 	}
 	g.AddKeymap("b", func() { g.Menu("bookmark") })
@@ -288,10 +287,11 @@ func config(g *app.Goful) {
 		"m", "micro         ", func() { g.Spawn("micro %f") },
 		"n", "nano          ", func() { g.Spawn("nano %f") },
 	)
+	// 添加windows下自定义编辑器
 	conf.CustomizeConfig(g, "editor")
 	g.AddKeymap("e", func() { g.Menu("editor") })
 
-    // Customize git
+    // 添加git菜单
     conf.CustomizeConfig(g, "git")
     g.AddKeymap("a", func() { g.Menu("git") })
     
@@ -417,6 +417,7 @@ func filerKeymap(g *app.Goful) widget.Keymap {
 		"q":         func() { g.Quit() },
 		"Q":         func() { g.Quit() },
 		":":         func() { g.Shell("") },
+		"M-x":       func() { g.Shell("") },
 		";":         func() { g.ShellSuspend("") },
 		"M-W":       func() { g.ChangeWorkspaceTitle() },
 		"n":         func() { g.Touch() },

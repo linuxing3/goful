@@ -46,7 +46,7 @@ func AddMenuItem(g *app.Goful, section string, item string) {
 	} else if section == "editor" {
 		menu.Add(section, c.accel, c.label, func() { g.Spawn(c.path) })
 	} else if section == "git" {
-		menu.Add(section, c.accel, c.label, func() { g.Shell(c.path) })
+		menu.Add(section, c.accel, c.label, func() { g.Spawn(c.path) })
 	}
 }
 
