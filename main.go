@@ -314,20 +314,25 @@ func config(g *app.Goful) {
 		associate = widget.Keymap{
 			".dir":  func() { g.Dir().EnterDir() },
 			".html": func() { g.Shell("msedge %~f") },
-			".md":   func() { g.Shell("micro %~f") },
-			".json": func() { g.Shell("micro %~f") },
-			".yml":  func() { g.Shell("micro %~f") },
-			".yaml": func() { g.Shell("micro %~f") },
-			".log":  func() { g.Shell("micro %~f") },
+
+			".md":   func() { g.Menu("editor") },
+			".json": func() { g.Menu("editor") },
+			".yml":  func() { g.Menu("editor") },
+			".yaml": func() { g.Menu("editor") },
+			".cmd":  func() { g.Menu("editor") },
+			".bat":  func() { g.Menu("editor") },
+			".vbs":  func() { g.Menu("editor") },
+			".log":  func() { g.Menu("editor") },
 			".org":  func() { g.Shell("runemacs -q %~f") },
 			".el":   func() { g.Shell("runemacs -q %~f") },
 			".vim":  func() { g.Shell("nvim-qt %~f") },
-			".go":   func() { g.Shell("go run %~f") },
-			".py":   func() { g.Shell("python %~f") },
-			".rb":   func() { g.Shell("ruby %~f") },
-			".js":   func() { g.Shell("node %~f") },
-			".ts":   func() { g.Shell("deno %~f") },
-			".rs":   func() { g.Shell("cargo run %~f") },
+
+			".go": func() { g.Shell("go run %~f") },
+			".py": func() { g.Shell("python %~f") },
+			".rb": func() { g.Shell("ruby %~f") },
+			".js": func() { g.Shell("node %~f") },
+			".ts": func() { g.Shell("deno %~f") },
+			".rs": func() { g.Shell("cargo run %~f") },
 		}
 	} else {
 		associate = widget.Keymap{
