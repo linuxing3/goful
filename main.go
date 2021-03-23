@@ -312,13 +312,20 @@ func config(g *app.Goful) {
 	var associate widget.Keymap
 	if runtime.GOOS == "windows" {
 		associate = widget.Keymap{
-			".dir": func() { g.Dir().EnterDir() },
-			".go":  func() { g.Shell("go run %~f") },
-			".py":  func() { g.Shell("python %~f") },
-			".rb":  func() { g.Shell("ruby %~f") },
-			".js":  func() { g.Shell("node %~f") },
-			".ts":  func() { g.Shell("deno %~f") },
-			".rs":  func() { g.Shell("cargo run %~f") },
+			".dir":  func() { g.Dir().EnterDir() },
+			".html": func() { g.Shell("msedge %~f") },
+			".md":   func() { g.Shell("micro %~f") },
+			".json": func() { g.Shell("micro %~f") },
+			".yml":  func() { g.Shell("micro %~f") },
+			".yaml": func() { g.Shell("micro %~f") },
+			".log":  func() { g.Shell("micro %~f") },
+			".org":  func() { g.Shell("runemacs %~f") },
+			".go":   func() { g.Shell("go run %~f") },
+			".py":   func() { g.Shell("python %~f") },
+			".rb":   func() { g.Shell("ruby %~f") },
+			".js":   func() { g.Shell("node %~f") },
+			".ts":   func() { g.Shell("deno %~f") },
+			".rs":   func() { g.Shell("cargo run %~f") },
 		}
 	} else {
 		associate = widget.Keymap{
@@ -334,12 +341,13 @@ func config(g *app.Goful) {
 			".txz": func() { g.Shell("tar xvfJ %f -C %D") },
 			".rar": func() { g.Shell("unrar x %f -C %D") },
 
-			".go": func() { g.Shell("go run %f") },
-			".py": func() { g.Shell("python %f") },
-			".rb": func() { g.Shell("ruby %f") },
-			".js": func() { g.Shell("node %f") },
-			".ts": func() { g.Shell("deno %f") },
-			".rs": func() { g.Shell("cargo run %f") },
+			".html": func() { g.Shell("elinks %~f") },
+			".go":   func() { g.Shell("go run %f") },
+			".py":   func() { g.Shell("python %f") },
+			".rb":   func() { g.Shell("ruby %f") },
+			".js":   func() { g.Shell("node %f") },
+			".ts":   func() { g.Shell("deno %f") },
+			".rs":   func() { g.Shell("cargo run %f") },
 
 			".jpg":  func() { g.Menu("image") },
 			".jpeg": func() { g.Menu("image") },
