@@ -5,7 +5,9 @@ menu:
       - add
       - commit
       - push
-      - deploy
+      - pull
+      - log
+      - status
     add:
       accel: "a"
       label: "add"
@@ -18,10 +20,18 @@ menu:
       accel: "p"
       label: "push"
       path: "git push"
-    deploy:
-      accel: "d"
-      label: "deploy"
-      path: "'git add .'' && 'git commit -m quick' && 'git push'"
+    pull:
+      accel: "P"
+      label: "pull"
+      path: "'git pull"
+    log:
+      accel: "l"
+      label: "log"
+      path: "'git log"
+    status:
+      accel: "s"
+      label: "status"
+      path: "'git status"
   editor:
     list:
       - separator
