@@ -40,15 +40,15 @@ menu:
     pull:
       accel: "P"
       label: "pull"
-      path: "'git pull"
+      path: "git pull"
     log:
       accel: "l"
       label: "log"
-      path: "'git log"
+      path: "git log"
     status:
       accel: "s"
       label: "status"
-      path: "'git status"
+      path: "git status"
   editor:
     list:
       - separator
