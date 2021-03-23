@@ -53,6 +53,7 @@ menu:
     list:
       - separator
       - win_micro
+      - win_vscode
       - win_emacs
       - win_nvim-qt
       - win_notepad2
@@ -64,6 +65,10 @@ menu:
       accel: "x"
       label: "win micro"
       path: "micro %~f"
+    win_vscode:
+      accel: "o"
+      label: "win vscode"
+      path: "code %~f"
     win_emacs:
       accel: "r"
       label: "win emacs"

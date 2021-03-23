@@ -38,7 +38,7 @@ func MakeDefaultConfig(text string) {
 	if string(c) == "" || err != nil {
 		fmt.Println("Config file not exists or is empty, fix for you...")
 		if err := os.WriteFile(path, []byte(text), 644); err != nil {
-			panic("Making default config failed!")
+			fmt.Println("Please restart your goful!")
 		}
 	}
 }
