@@ -3,7 +3,6 @@ module github.com/linuxing3/goful
 go 1.16
 
 require (
-	github.com/ChimeraCoder/gojson v1.1.0 // indirect
 	github.com/anmitsu/goful v0.0.0-20210227233931-c8b257c205db
 	github.com/mattn/go-runewidth v0.0.10
 	github.com/mitchellh/mapstructure v1.1.2
