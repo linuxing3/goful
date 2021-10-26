@@ -280,7 +280,7 @@ func config(g *app.Goful) {
 
 	menu.Add("editor",
 		"c", "vscode        ", func() { g.Spawn("code %f %&") },
-		"e", "emacs client  ", func() { g.Spawn("emacsclient -n %f %&") },
+		"e", "emacs client  ", func() { g.Spawn("emacsclient -c %f %&") },
 		"M", "emacs         ", func() { g.Spawn("emacs -q %f %&") },
 		"v", "nvim          ", func() { g.Spawn("nvim %f") },
 		"m", "micro         ", func() { g.Spawn("micro %f") },
