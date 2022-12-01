@@ -205,36 +205,17 @@ func config(g *app.Goful) {
 	)
 	g.AddKeymap("x", func() { g.Menu("command") })
 
+	// 添加自定义外部命令
+	conf.CustomizeConfig(g, "external-command")
 	if runtime.GOOS == "windows" {
 		menu.Add("external-command",
-			"c", "copy %~f to %~D2 ", func() { g.Shell("robocopy /e %~f %~D2") },
-			"m", "move %~f to %~D2 ", func() { g.Shell("move /-y %~f %~D2") },
-			"d", "del /s %~m       ", func() { g.Shell("del /s %~m") },
-			"D", "rd /s /q %~m     ", func() { g.Shell("rd /s /q %~m") },
-			"k", "make directory   ", func() { g.Shell("mkdir ") },
-			"n", "create newfile   ", func() { g.Shell("copy nul ") },
-			"r", "move (rename) %f ", func() { g.Shell("move /-y %~f ./") },
-			"w", "where . *        ", func() { g.Shell("where . *") },
 			"Z", "Config Template", func() { conf.MakeDefaultConfig(conf.ConfigTemplate) },
 		)
 	} else {
 		menu.Add("external-command",
-			"c", "copy %m to %D2    ", func() { g.Shell("cp -vai %m %D2") },
-			"m", "move %m to %D2    ", func() { g.Shell("mv -vi %m %D2") },
-			"D", "remove %m files   ", func() { g.Shell("rm -vR %m") },
-			"k", "make directory    ", func() { g.Shell("mkdir -vp ./") },
-			"n", "create newfile    ", func() { g.Shell("touch ./") },
-			"T", "time copy %f to %m", func() { g.Shell("touch -r %f %m") },
-			"M", "change mode %m    ", func() { g.Shell("chmod 644 %m", -3) },
-			"r", "move (rename) %f  ", func() { g.Shell("mv -vi %f " + g.File().Name()) },
-			"R", "bulk rename %m    ", func() { g.Shell(`rename -v "s///" %m`, -6) },
-			"f", "find . -name      ", func() { g.Shell(`find . -name "*"`, -1) },
-			"A", "archives menu     ", func() { g.Menu("archive") },
 			"Z", "Config Template", func() { conf.MakeDefaultConfig(conf.ConfigTemplate) },
 		)
 	}
-	// 添加自定义外部命令
-	conf.CustomizeConfig(g, "external-command")
 	g.AddKeymap("X", func() { g.Menu("external-command") })
 
 	if runtime.GOOS == "windows" {
@@ -289,41 +270,26 @@ func config(g *app.Goful) {
 	// 添加自定义书签
 	conf.CustomizeConfig(g, "bookmark")
 	menu.Add("bookmark",
-		"t", "~/Desktop  ", func() { g.Dir().Chdir("~/Desktop") },
-		"c", "~/Documents", func() { g.Dir().Chdir("~/Documents") },
-		"d", "~/Downloads", func() { g.Dir().Chdir("~/Downloads") },
-		"m", "~/Music    ", func() { g.Dir().Chdir("~/Music") },
-		"p", "~/Pictures ", func() { g.Dir().Chdir("~/Pictures") },
-		"v", "~/Videos   ", func() { g.Dir().Chdir("~/Videos") },
+		"1", "~/Desktop  ", func() { g.Dir().Chdir("~/Desktop") },
+		"2", "~/Documents", func() { g.Dir().Chdir("~/Documents") },
+		"3", "~/Downloads", func() { g.Dir().Chdir("~/Downloads") },
+		"4", "~/Music    ", func() { g.Dir().Chdir("~/Music") },
+		"5", "~/Pictures ", func() { g.Dir().Chdir("~/Pictures") },
+		"6", "~/Videos   ", func() { g.Dir().Chdir("~/Videos") },
+		"7", "/etc          ", func() { g.Dir().Chdir("/etc") },
+		"8", "/usr/local/etc", func() { g.Dir().Chdir("/usr/local/etc") },
+		"9", "/usr          ", func() { g.Dir().Chdir("/usr") },
+		"a", "/media        ", func() { g.Dir().Chdir("/media") },
+		"b", "/mnt          ", func() { g.Dir().Chdir("/mnt") },
 	)
-	if runtime.GOOS == "windows" {
-		menu.Add("bookmark",
-			"C", "C:/", func() { g.Dir().Chdir("C:/") },
-			"D", "D:/", func() { g.Dir().Chdir("D:/") },
-			"E", "E:/", func() { g.Dir().Chdir("E:/") },
-		)
-	} else {
-		menu.Add("bookmark",
-			"e", "/etc          ", func() { g.Dir().Chdir("/etc") },
-			"E", "/usr/local/etc", func() { g.Dir().Chdir("/usr/local/etc") },
-			"u", "/usr          ", func() { g.Dir().Chdir("/usr") },
-			"x", "/media        ", func() { g.Dir().Chdir("/media") },
-			"m", "/mnt          ", func() { g.Dir().Chdir("/mnt") },
-		)
-	}
 	g.AddKeymap("b", func() { g.Menu("bookmark") })
 
+	// 添加windows下自定义编辑器
+	conf.CustomizeConfig(g, "editor")
 	menu.Add("editor",
 		"v", "nvim          ", func() { g.Spawn("nvim %f") },
 		"V", "vim           ", func() { g.Spawn("vim %f") },
-		"c", "vscode        ", func() { g.Spawn("code %f") },
-		"e", "emacs client  ", func() { g.Spawn("emacsclient -c %f %&") },
-		"M", "emacs         ", func() { g.Spawn("emacs -q %f %&") },
-		"m", "micro         ", func() { g.Spawn("micro %f") },
-		"n", "nano          ", func() { g.Spawn("nano %f") },
 	)
-	// 添加windows下自定义编辑器
-	conf.CustomizeConfig(g, "editor")
 	g.AddKeymap("e", func() { g.Menu("editor") })
 
 	// 添加git菜单
