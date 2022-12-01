@@ -75,6 +75,15 @@ func config(g *app.Goful) {
 	filer.SetStatView(true, false, true)  // size, permission and time
 	filer.SetTimeFormat("06-01-02 15:04") // ex: "Jan _2 15:04"
 
+	console := "cmd"
+	switch runtime.GOOS {
+	case "windows":
+		console = "cmd"
+	case "linux":
+		console = "zsh"
+	}
+	g.AddKeymap("t", func() { g.Shell(console) })
+
 	// C-m或回车打开文件
 	// 宏 %f 代表当前文件
 	opener := "xdg-open %f %&"
@@ -307,8 +316,7 @@ func config(g *app.Goful) {
 	menu.Add("editor",
 		"v", "nvim          ", func() { g.Spawn("nvim %f") },
 		"V", "vim           ", func() { g.Spawn("vim %f") },
-		"c", "vscode        ", func() { g.Spawn("code %f %&") },
-		"f", "fleet         ", func() { g.Spawn("fleet %f") },
+		"c", "vscode        ", func() { g.Spawn("code %f") },
 		"e", "emacs client  ", func() { g.Spawn("emacsclient -c %f %&") },
 		"M", "emacs         ", func() { g.Spawn("emacs -q %f %&") },
 		"m", "micro         ", func() { g.Spawn("micro %f") },
