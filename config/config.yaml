@@ -52,59 +52,59 @@ menu:
   editor:
     list:
       - separator
-      - win_micro
+      - win_helix
       - win_vscode
       - win_emacs
-      - win_nvim-qt
-      - win_notepad2
+      - win_nvim
+      - win_notepad
     separator:
       accel: "-"
       label: "----win-----"
       path: ""
-    win_micro:
+    win_helix:
       accel: "x"
-      label: "win micro"
-      path: "micro %~f"
+      label: "win helix"
+      path: "hx.exe %~f"
     win_vscode:
       accel: "o"
       label: "win vscode"
-      path: "code %~f"
+      path: "code-insiders %~f"
     win_emacs:
       accel: "r"
       label: "win emacs"
       path: "emacs %~f"
-    win_notepad2:
+    win_notepad:
       accel: "t"
-      label: "win notepad2"
-      path: "notepad2 %~f"
-    win_nvim-qt:
+      label: "win notepad"
+      path: "notepad %~f"
+    win_nvim:
       accel: "s"
-      label: "nvim-qt"
-      path: "nvim-qt %~f"
+      label: "nvim"
+      path: "nvim.exe %~f"
   external-command:
     list:
       - separator
-      - win_micro
-      - win_notepad2
-      - win_nvim-qt
+      - win_helix
+      - win_notepad
+      - win_nvim
       - separator
       - fzf
     separator:
       accel: "-"
       label: "----win-----"
       path: ""
-    win_micro:
+    win_helix:
       accel: "x"
-      label: "win micro"
-      path: "micro %~f"
-    win_notepad2:
+      label: "win helix"
+      path: "hx.exe %~f"
+    win_notepad:
       accel: "t"
-      label: "win notepad2"
-      path: "notepad2 %~f"
-    win_nvim-qt:
+      label: "win notepad"
+      path: "notepad %~f"
+    win_nvim:
       accel: "s"
-      label: "nvim-qt"
-      path: "nvim-qt %~f"
+      label: "nvim"
+      path: "nvim %~f"
     win_bat:
       accel: "b"
       label: "win bat"
@@ -121,13 +121,12 @@ menu:
     list:
       - dropbox
       - onedrive
-      - envsetup
+      - dotfiles
       - gosrc
       - workspace
       - separator
-      - win_drive_f
-      - win_drive_g
-      - win_drive_h
+      - win_drive_d
+      - win_drive_e
     separator:
       accel: "-"
       label: "------------"
@@ -140,27 +139,23 @@ menu:
       accel: o 
       label: "~/OneDrive"
       path: "~/OneDrive"
-    envsetup:
+    dotfiles:
       accel: s
-      label: "~/EnvSetup"
-      path: "~/EnvSetup"
+      label: "~/.dotfiles"
+      path: "~/.dotfiles"
     gosrc:
       accel: g
       label: "go src"
-      path: "~/go/src/github.com"
+      path: "D:/gopath/src/github.com"
     workspace:
       accel: w 
-      label: "~/workspace"
-      path: "~/workspace"
-    win_drive_f:
-      accel: F 
-      label: "F:/"
-      path: "F:/"
-    win_drive_g:
-      accel: G 
-      label: "G:/"
-      path: "G:/"
-    win_drive_h:
-      accel: H 
-      label: "H:/"
-      path: "H:/"
+      label: "D:/workspace"
+      path: "D:/workspace"
+    win_drive_d:
+      accel: D 
+      label: "D:/"
+      path: "D:/"
+    win_drive_e:
+      accel: E 
+      label: "E:/"
+      path: "E:/"
