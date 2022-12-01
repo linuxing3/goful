@@ -1,4 +1,91 @@
-package maiSpawn(opener) },
+package main
+
+import (
+	"os"
+	"runtime"
+	"strings"
+
+	"github.com/anmitsu/goful/app"
+	"github.com/anmitsu/goful/cmdline"
+	"github.com/anmitsu/goful/filer"
+	"github.com/anmitsu/goful/look"
+	"github.com/anmitsu/goful/menu"
+	"github.com/anmitsu/goful/message"
+	"github.com/anmitsu/goful/widget"
+	conf "github.com/linuxing3/goful/config"
+	"github.com/mattn/go-runewidth"
+)
+
+func main() {
+	// ui.TestListBox()
+	start()
+}
+
+func start() {
+	// 加载自定义设置
+	conf.InitConfig()
+	widget.Init()
+	defer widget.Fini()
+
+	// 修改终端标题
+	if strings.Contains(os.Getenv("TERM"), "screen") {
+		os.Stdout.WriteString("\033kgoful\033") // for tmux
+	} else {
+		os.Stdout.WriteString("\033]0;goful\007") // for otherwise
+	}
+
+	const state = "~/.goful/state.json"
+	const history = "~/.goful/history/shell"
+
+	goful := app.NewGoful(state)
+	config(goful)
+	_ = cmdline.LoadHistory(history)
+
+	goful.Run()
+
+	_ = goful.SaveState(state)
+	_ = cmdline.SaveHistory(history)
+}
+
+func config(g *app.Goful) {
+
+	look.Set("default") // default, midnight, black, white
+
+	if runewidth.EastAsianWidth {
+		// Because layout collapsing for ambiguous runes if LANG=ja_JP.
+		widget.SetBorder('|', '-', '+', '+', '+', '+')
+	} else {
+		// Look good if environment variable RUNEWIDTH_EASTASIAN=0 and
+		// ambiguous char setting is half-width for gnome-terminal.
+		widget.SetBorder('│', '─', '┌', '┐', '└', '┘') // 0x2502, 0x2500, 0x250c, 0x2510, 0x2514, 0x2518
+	}
+	g.SetBorderStyle(widget.AllBorder) // AllBorder, ULBorder, NoBorder
+
+	message.SetInfoLog("~/.goful/log/info.log")   // "" is not logging
+	message.SetErrorLog("~/.goful/log/error.log") // "" is not logging
+	message.Sec(5)                                // display second for a message
+
+	// Setup widget keymaps.
+	g.ConfigFiler(filerKeymap)
+	filer.ConfigFinder(finderKeymap)
+	cmdline.Config(cmdlineKeymap)
+	cmdline.ConfigCompletion(completionKeymap)
+	menu.Config(menuKeymap)
+
+	filer.SetStatView(true, false, true)  // size, permission and time
+	filer.SetTimeFormat("06-01-02 15:04") // ex: "Jan _2 15:04"
+
+	// C-m或回车打开文件
+	// 宏 %f 代表当前文件
+	opener := "xdg-open %f %&"
+	switch runtime.GOOS {
+	case "windows":
+		opener = "explorer %~f %&"
+	case "darwin":
+		opener = "open %f %&"
+	}
+	g.MergeKeymap(widget.Keymap{
+		"C-m": func() { g.Spawn(opener) },
 		"o":   func() { g.Spawn(opener) },
 	})
 
@@ -153,6 +240,7 @@ package maiSpawn(opener) },
 			"8", "go run ", func() { g.Shell("go run") },
 		)
 	} else {
+		menu.Add("build",
 			"1", "xmake build ", func() { g.Shell("xmake") },
 			"2", "xmake run ", func() { g.Shell("xmake r") },
 			"3", "cmake build ", func() { g.Shell("cmake --build .") },
@@ -161,6 +249,7 @@ package maiSpawn(opener) },
 			"6", "cargo run ", func() { g.Shell("cargo run") },
 			"7", "go build ", func() { g.Shell("go build") },
 			"8", "go run ", func() { g.Shell("go run") },
+		)
 	}
 	conf.CustomizeConfig(g, "build")
 	g.AddKeymap("B", func() { g.Menu("build") })
@@ -331,25 +420,25 @@ package maiSpawn(opener) },
 
 func filerKeymap(g *app.Goful) widget.Keymap {
 	return widget.Keymap{
-		"M-C-o":     func() { g.CreateWorkspace() },
-		"M-C-w":     func() { g.CloseWorkspace() },
-		"C-n":       func() { g.CreateWorkspace() },
-		"C-q":       func() { g.CloseWorkspace() },
-		"C-f":       func() { g.MoveWorkspace(1) },
-		"C-b":       func() { g.MoveWorkspace(-1) },
-		"M-f":       func() { g.MoveWorkspace(1) },
-		"M-b":       func() { g.MoveWorkspace(-1) },
-		"C-o":       func() { g.Workspace().CreateDir() },
-		"C-w":       func() { g.Workspace().CloseDir() },
-		"C-l":       func() { g.Workspace().ReloadAll() },
+		"M-C-o": func() { g.CreateWorkspace() },
+		"M-C-w": func() { g.CloseWorkspace() },
+		"C-n":   func() { g.CreateWorkspace() },
+		"C-q":   func() { g.CloseWorkspace() },
+		"C-f":   func() { g.MoveWorkspace(1) },
+		"C-b":   func() { g.MoveWorkspace(-1) },
+		"M-f":   func() { g.MoveWorkspace(1) },
+		"M-b":   func() { g.MoveWorkspace(-1) },
+		"C-o":   func() { g.Workspace().CreateDir() },
+		"C-w":   func() { g.Workspace().CloseDir() },
+		"C-l":   func() { g.Workspace().ReloadAll() },
 		// "C-f":       func() { g.Workspace().MoveFocus(1) },
 		// "C-b":       func() { g.Workspace().MoveFocus(-1) },
-		"right":     func() { g.Workspace().MoveFocus(1) },
-		"left":      func() { g.Workspace().MoveFocus(-1) },
+		"right": func() { g.Workspace().MoveFocus(1) },
+		"left":  func() { g.Workspace().MoveFocus(-1) },
 		// "C-i":       func() { g.Workspace().MoveFocus(1) },
-		"l":         func() { g.Workspace().MoveFocus(1) },
-		"h":         func() { g.Workspace().MoveFocus(-1) },
-		"F":         func() { g.Workspace().SwapNextDir() },
+		"l": func() { g.Workspace().MoveFocus(1) },
+		"h": func() { g.Workspace().MoveFocus(-1) },
+		"F": func() { g.Workspace().SwapNextDir() },
 		// "B":         func() { g.Workspace().SwapPrevDir() },
 		"w":         func() { g.Workspace().ChdirNeighbor() },
 		"C-h":       func() { g.Dir().Chdir("..") },
@@ -359,46 +448,46 @@ func filerKeymap(g *app.Goful) widget.Keymap {
 		"\\":        func() { g.Dir().Chdir("/") },
 		// "C-n":       func() { g.Dir().MoveCursor(1) },
 		// "C-p":       func() { g.Dir().MoveCursor(-1) },
-		"down":      func() { g.Dir().MoveCursor(1) },
-		"up":        func() { g.Dir().MoveCursor(-1) },
-		"j":         func() { g.Dir().MoveCursor(1) },
-		"k":         func() { g.Dir().MoveCursor(-1) },
-		"C-d":       func() { g.Dir().MoveCursor(5) },
-		"C-u":       func() { g.Dir().MoveCursor(-5) },
-		"C-a":       func() { g.Dir().MoveTop() },
-		"C-e":       func() { g.Dir().MoveBottom() },
-		"home":      func() { g.Dir().MoveTop() },
-		"end":       func() { g.Dir().MoveBottom() },
-		"u":         func() { g.Dir().MoveTop() },
-		"G":         func() { g.Dir().MoveBottom() },
-		"M-n":       func() { g.Dir().Scroll(1) },
-		"M-p":       func() { g.Dir().Scroll(-1) },
-		"C-v":       func() { g.Dir().PageDown() },
-		"M-v":       func() { g.Dir().PageUp() },
-		"pgdn":      func() { g.Dir().PageDown() },
-		"pgup":      func() { g.Dir().PageUp() },
-		" ":         func() { g.Dir().ToggleMark() },
-		"C-space":   func() { g.Dir().InvertMark() },
-		"C-g":       func() { g.Dir().Reset() },
-		"C-[":       func() { g.Dir().Reset() }, // C-[ means ESC
-		"f":         func() { g.Dir().Finder() },
-		"/":         func() { g.Dir().Finder() },
-		"q":         func() { g.Quit() },
-		"Q":         func() { g.Quit() },
-		":":         func() { g.Shell("") },
-		"M-x":       func() { g.Shell("") },
-		";":         func() { g.ShellSuspend("") },
-		"M-W":       func() { g.ChangeWorkspaceTitle() },
-		"n":         func() { g.Touch() },
-		"K":         func() { g.Mkdir() },
-		"c":         func() { g.Copy() },
-		"m":         func() { g.Move() },
-		"r":         func() { g.Rename() },
-		"R":         func() { g.BulkRename() },
-		"D":         func() { g.Remove() },
-		"d":         func() { g.Chdir() },
-		"g":         func() { g.Glob() },
-		"$":         func() { g.Globdir() },
+		"down":    func() { g.Dir().MoveCursor(1) },
+		"up":      func() { g.Dir().MoveCursor(-1) },
+		"j":       func() { g.Dir().MoveCursor(1) },
+		"k":       func() { g.Dir().MoveCursor(-1) },
+		"C-d":     func() { g.Dir().MoveCursor(5) },
+		"C-u":     func() { g.Dir().MoveCursor(-5) },
+		"C-a":     func() { g.Dir().MoveTop() },
+		"C-e":     func() { g.Dir().MoveBottom() },
+		"home":    func() { g.Dir().MoveTop() },
+		"end":     func() { g.Dir().MoveBottom() },
+		"u":       func() { g.Dir().MoveTop() },
+		"G":       func() { g.Dir().MoveBottom() },
+		"M-n":     func() { g.Dir().Scroll(1) },
+		"M-p":     func() { g.Dir().Scroll(-1) },
+		"C-v":     func() { g.Dir().PageDown() },
+		"M-v":     func() { g.Dir().PageUp() },
+		"pgdn":    func() { g.Dir().PageDown() },
+		"pgup":    func() { g.Dir().PageUp() },
+		" ":       func() { g.Dir().ToggleMark() },
+		"C-space": func() { g.Dir().InvertMark() },
+		"C-g":     func() { g.Dir().Reset() },
+		"C-[":     func() { g.Dir().Reset() }, // C-[ means ESC
+		"f":       func() { g.Dir().Finder() },
+		"/":       func() { g.Dir().Finder() },
+		"q":       func() { g.Quit() },
+		"Q":       func() { g.Quit() },
+		":":       func() { g.Shell("") },
+		"M-x":     func() { g.Shell("") },
+		";":       func() { g.ShellSuspend("") },
+		"M-W":     func() { g.ChangeWorkspaceTitle() },
+		"n":       func() { g.Touch() },
+		"K":       func() { g.Mkdir() },
+		"c":       func() { g.Copy() },
+		"m":       func() { g.Move() },
+		"r":       func() { g.Rename() },
+		"R":       func() { g.BulkRename() },
+		"D":       func() { g.Remove() },
+		"d":       func() { g.Chdir() },
+		"g":       func() { g.Glob() },
+		"$":       func() { g.Globdir() },
 	}
 }
 
